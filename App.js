@@ -3,9 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import LoginScreen from "./screens/LoginScreen";
-import WelcomeScreen from "./screens/WelcomeScreen";
+import ChpEntry from "./screens/ChpEntry";
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
@@ -36,8 +35,8 @@ function AuthenticatedStack() {
       }}
     >
       <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
+        name="Chp Entry"
+        component={ChpEntry}
         options={{
           headerRight: (tintColor) => (
             <IconButton
