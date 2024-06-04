@@ -35,7 +35,7 @@ function AuthenticatedStack() {
       }}
     >
       <Stack.Screen
-        name="Chpentry"
+        name="chpentry"
         component={ChpEntry}
         options={{
           headerRight: (tintColor) => (
