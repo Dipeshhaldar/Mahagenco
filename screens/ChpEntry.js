@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import Button from '../components/ui/Button'; 
 
 const ChpEntry = () => {
   const [formData, setFormData] = useState({
@@ -130,9 +130,10 @@ const ChpEntry = () => {
 
       <View style={styles.inputContainer}>
         <Text>Select Coal Type:</Text>
-        <Picker
-          selectedValue={formData.coalType}
-          onValueChange={(value) => handleInputChange('coalType', value)}
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={formData.coalType}
+            onValueChange={(value) => handleInputChange('coalType', value)}
           >
             <Picker.Item label="Please select" value="" />
             {firstOptions.map((option, index) => (
@@ -140,10 +141,12 @@ const ChpEntry = () => {
             ))}
           </Picker>
         </View>
-  
-        {formData.coalType && (
-          <View style={styles.inputContainer}>
-            <Text>Select Coal Company:</Text>
+      </View>
+
+      {formData.coalType && (
+        <View style={styles.inputContainer}>
+          <Text>Select Coal Company:</Text>
+          <View style={styles.pickerContainer}>
             <Picker
               selectedValue={formData.coalComponent}
               onValueChange={(value) => handleInputChange('coalComponent', value)}
@@ -154,11 +157,13 @@ const ChpEntry = () => {
               ))}
             </Picker>
           </View>
-        )}
-  
-        {formData.coalType === "Raw Coal" && (
-          <View style={styles.inputContainer}>
-            <Text>Select Declared Grade:</Text>
+        </View>
+      )}
+
+      {formData.coalType === "Raw Coal" && (
+        <View style={styles.inputContainer}>
+          <Text>Select Declared Grade:</Text>
+          <View style={styles.pickerContainer}>
             <Picker
               selectedValue={formData.selectDeclared}
               onValueChange={(value) => handleInputChange('selectDeclared', value)}
@@ -169,109 +174,110 @@ const ChpEntry = () => {
               ))}
             </Picker>
           </View>
+        </View>
+      )}
+
+      {(formData.coalType === "Raw Coal" || formData.coalType === "Washed Coal") && (
+        <View style={styles.inputContainer}>
+          <Text>Select Mine/Siding:</Text>
+          <TextInput
+            style={styles.textInput}
+            value={formData.selectMine}
+            onChangeText={(text) => handleInputChange('selectMine', text)}
+          />
+        </View>
+      )}
+
+      <View style={styles.inputContainer}>
+        <Text>RR No.:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.rrNo}
+          onChangeText={(text) => handleInputChange('rrNo', text)}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text>RR Date:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.rrDate.toLocaleDateString()}
+          onFocus={() => setShowRRDatePicker(true)}
+        />
+        {showRRDatePicker && (
+          <DateTimePicker
+            value={formData.rrDate}
+            mode="date"
+            display="default"
+            onChange={onRRDateChange}
+          />
         )}
-  
-        {(formData.coalType === "Raw Coal" || formData.coalType === "Washed Coal") && (
-          <View style={styles.inputContainer}>
-            <Text>Select Mine/Siding:</Text>
-            <TextInput
-              style={styles.textInput}
-              value={formData.selectMine}
-              onChangeText={(text) => handleInputChange('selectMine', text)}
-            />
-          </View>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text>Receipt Date:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.receiptDate.toLocaleDateString()}
+          onFocus={() => setShowReceiptDatePicker(true)}
+        />
+        {showReceiptDatePicker && (
+          <DateTimePicker
+            value={formData.receiptDate}
+            mode="date"
+            display="default"
+            onChange={onReceiptDateChange}
+          />
         )}
-  
-        <View style={styles.inputContainer}>
-          <Text>RR No.:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.rrNo}
-            onChangeText={(text) => handleInputChange('rrNo', text)}
-          />
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text>RR Date:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.rrDate.toLocaleDateString()}
-            onFocus={() => setShowRRDatePicker(true)}
-          />
-          {showRRDatePicker && (
-            <DateTimePicker
-              value={formData.rrDate}
-              mode="date"
-              display="default"
-              onChange={onRRDateChange}
-            />
-          )}
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text>Receipt Date:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.receiptDate.toLocaleDateString()}
-            onFocus={() => setShowReceiptDatePicker(true)}
-          />
-          {showReceiptDatePicker && (
-            <DateTimePicker
-              value={formData.receiptDate}
-              mode="date"
-              display="default"
-              onChange={onReceiptDateChange}
-            />
-          )}
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text>No. of Boxes:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.noBox}
-            onChangeText={(text) => handleInputChange('noBox', text)}
-          />
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text>Rake No.:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.rakeNo}
-            onChangeText={(text) => handleInputChange('rakeNo', text)}
-          />
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text>RR Wt:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.rrWt}
-            onChangeText={(text) => handleInputChange('rrWt', text)}
-          />
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text>TPS Wt:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.tpsWt}
-            onChangeText={(text) => handleInputChange('tpsWt', text)}
-          />
-        </View>
-  
-        <View style={styles.inputContainer}>
-          <Text>Wt Avg:</Text>
-          <TextInput
-            style={styles.textInput}
-            value={formData.wtAvg}
-            onChangeText={(text) => handleInputChange('wtAvg', text)}
-          />
-        </View>
-  
-        <View style={styles.submitButton}>
-          <Button title="Submit" onPress={handleSubmit } />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text>No. of Boxes:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.noBox}
+          onChangeText={(text) => handleInputChange('noBox', text)}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text>Rake No.:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.rakeNo}
+          onChangeText={(text) => handleInputChange('rakeNo', text)}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text>RR Wt:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.rrWt}
+          onChangeText={(text) => handleInputChange('rrWt', text)}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text>TPS Wt:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.tpsWt}
+          onChangeText={(text) => handleInputChange('tpsWt', text)}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text>Wt Avg:</Text>
+        <TextInput
+          style={styles.textInput}
+          value={formData.wtAvg}
+          onChangeText={(text) => handleInputChange('wtAvg', text)}
+        />
+      </View>
+
+      <View style={styles.submitButton}>
+        <Button onPress={handleSubmit}>Submit</Button>
       </View>
     </ScrollView>
   );
@@ -284,31 +290,29 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   inputContainer: {
     marginVertical: 10,
   },
   textInput: {
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
     padding: 10,
-    borderRadius: 5,
-  },
-  submitButton: {
-    marginTop: 20,
-    marginBottom: 35,
     borderRadius: 5,
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
+    borderRadius: 5,
+  },
+  submitButton: {
+    marginTop: 20,
+    marginBottom: 38,
     borderRadius: 5,
   },
 });
 
 export default ChpEntry;
-  
-           
