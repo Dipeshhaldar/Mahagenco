@@ -1,17 +1,10 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import Button from '../components/ui/Button'; 
 
 const ChpEntry = () => {
   const [formData, setFormData] = useState({
@@ -140,7 +133,7 @@ const ChpEntry = () => {
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={formData.coalType}
-            onValueChange={(value) => handleInputChange("coalType", value)}
+            onValueChange={(value) => handleInputChange('coalType', value)}
           >
             <Picker.Item label="Please select" value="" />
             {firstOptions.map((option, index) => (
@@ -156,9 +149,7 @@ const ChpEntry = () => {
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={formData.coalComponent}
-              onValueChange={(value) =>
-                handleInputChange("coalComponent", value)
-              }
+              onValueChange={(value) => handleInputChange('coalComponent', value)}
             >
               <Picker.Item label="Please select" value="" />
               {secondOptions.map((option, index) => (
@@ -175,9 +166,7 @@ const ChpEntry = () => {
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={formData.selectDeclared}
-              onValueChange={(value) =>
-                handleInputChange("selectDeclared", value)
-              }
+              onValueChange={(value) => handleInputChange('selectDeclared', value)}
             >
               <Picker.Item label="Please select" value="" />
               {declaredGrade.map((grade, index) => (
@@ -188,14 +177,13 @@ const ChpEntry = () => {
         </View>
       )}
 
-      {(formData.coalType === "Raw Coal" ||
-        formData.coalType === "Washed Coal") && (
+      {(formData.coalType === "Raw Coal" || formData.coalType === "Washed Coal") && (
         <View style={styles.inputContainer}>
           <Text>Select Mine/Siding:</Text>
           <TextInput
             style={styles.textInput}
             value={formData.selectMine}
-            onChangeText={(text) => handleInputChange("selectMine", text)}
+            onChangeText={(text) => handleInputChange('selectMine', text)}
           />
         </View>
       )}
@@ -205,7 +193,7 @@ const ChpEntry = () => {
         <TextInput
           style={styles.textInput}
           value={formData.rrNo}
-          onChangeText={(text) => handleInputChange("rrNo", text)}
+          onChangeText={(text) => handleInputChange('rrNo', text)}
         />
       </View>
 
@@ -248,7 +236,7 @@ const ChpEntry = () => {
         <TextInput
           style={styles.textInput}
           value={formData.noBox}
-          onChangeText={(text) => handleInputChange("noBox", text)}
+          onChangeText={(text) => handleInputChange('noBox', text)}
         />
       </View>
 
@@ -257,7 +245,7 @@ const ChpEntry = () => {
         <TextInput
           style={styles.textInput}
           value={formData.rakeNo}
-          onChangeText={(text) => handleInputChange("rakeNo", text)}
+          onChangeText={(text) => handleInputChange('rakeNo', text)}
         />
       </View>
 
@@ -266,7 +254,7 @@ const ChpEntry = () => {
         <TextInput
           style={styles.textInput}
           value={formData.rrWt}
-          onChangeText={(text) => handleInputChange("rrWt", text)}
+          onChangeText={(text) => handleInputChange('rrWt', text)}
         />
       </View>
 
@@ -275,7 +263,7 @@ const ChpEntry = () => {
         <TextInput
           style={styles.textInput}
           value={formData.tpsWt}
-          onChangeText={(text) => handleInputChange("tpsWt", text)}
+          onChangeText={(text) => handleInputChange('tpsWt', text)}
         />
       </View>
 
@@ -284,12 +272,12 @@ const ChpEntry = () => {
         <TextInput
           style={styles.textInput}
           value={formData.wtAvg}
-          onChangeText={(text) => handleInputChange("wtAvg", text)}
+          onChangeText={(text) => handleInputChange('wtAvg', text)}
         />
       </View>
 
       <View style={styles.submitButton}>
-        <Button title="Submit" onPress={handleSubmit} />
+        <Button onPress={handleSubmit}>Submit</Button>
       </View>
     </ScrollView>
   );
@@ -302,27 +290,27 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   inputContainer: {
     marginVertical: 10,
   },
   textInput: {
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
     padding: 10,
-    borderRadius: 5,
-  },
-  submitButton: {
-    marginTop: 20,
-    marginBottom: 20,
     borderRadius: 5,
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
+    borderRadius: 5,
+  },
+  submitButton: {
+    marginTop: 20,
+    marginBottom: 38,
     borderRadius: 5,
   },
 });
