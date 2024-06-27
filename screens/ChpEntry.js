@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import Button from '../components/ui/Button'; 
+import Button from '../components/ui/Button';
 
 const ChpEntry = () => {
   const [formData, setFormData] = useState({
@@ -47,6 +47,8 @@ const ChpEntry = () => {
     "G17(2201-2500)",
   ];
   const secondOptions = ["WCL", "MCL", "SECL", "SCCL", "OTHER"];
+  const washeryOperators = ["Operator A", "Operator B", "Operator C"];
+  const importedCoalOptions = ["Option I", "Option II", "Option III"];
 
   const handleInputChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -143,7 +145,7 @@ const ChpEntry = () => {
         </View>
       </View>
 
-      {formData.coalType && (
+      {(formData.coalType === "Raw Coal" || formData.coalType === "Washed Coal" || formData.coalType === "Imported Coal") && (
         <View style={styles.inputContainer}>
           <Text>Select Coal Company:</Text>
           <View style={styles.pickerContainer}>
@@ -152,9 +154,13 @@ const ChpEntry = () => {
               onValueChange={(value) => handleInputChange('coalComponent', value)}
             >
               <Picker.Item label="Please select" value="" />
-              {secondOptions.map((option, index) => (
-                <Picker.Item key={index} label={option} value={option} />
-              ))}
+              {formData.coalType === "Imported Coal" 
+                ? importedCoalOptions.map((option, index) => (
+                    <Picker.Item key={index} label={option} value={option} />
+                  ))
+                : secondOptions.map((option, index) => (
+                    <Picker.Item key={index} label={option} value={option} />
+                  ))}
             </Picker>
           </View>
         </View>
@@ -171,6 +177,23 @@ const ChpEntry = () => {
               <Picker.Item label="Please select" value="" />
               {declaredGrade.map((grade, index) => (
                 <Picker.Item key={index} label={grade} value={grade} />
+              ))}
+            </Picker>
+          </View>
+        </View>
+      )}
+
+      {formData.coalType === "Washed Coal" && (
+        <View style={styles.inputContainer}>
+          <Text>Select Washery Operator:</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={formData.selectWasheryOperator}
+              onValueChange={(value) => handleInputChange('selectWasheryOperator', value)}
+            >
+              <Picker.Item label="Please select" value="" />
+              {washeryOperators.map((operator, index) => (
+                <Picker.Item key={index} label={operator} value={operator} />
               ))}
             </Picker>
           </View>
